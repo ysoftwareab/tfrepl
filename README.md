@@ -72,6 +72,8 @@ run `tfwatch local.test` and start modifying your terraform files to include `lo
 you'll see the value being updated in the `tfwatch` output,
 so that you check whether it matches your intentions/expectations or not.
 
+You can pass any expression e.g. `concat(module.foo.value, module.bar.value)`.
+
 ## Development
 
 Releasing new version is as easy as running `priv/release`
