@@ -99,6 +99,7 @@ Differences
 * :heavy_plus_sign: `tfrepl` supports multiline config
 * :heavy_plus_sign: `tfrepl` sandboxes history to each .terraform folder
 * :heavy_plus_sign: `tfrepl` introduces a specific syntax for commands: leading `.`
+* :heavy_minus_sign: `terraform-repl` has a `local` command showing all local variables.
 
 ## License
 
