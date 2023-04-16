@@ -100,4 +100,4 @@ Differences
 
 ## License
 
-[UNLICENSE](./UNLICENSE)
+[Apache 2.0](./LICENSE)

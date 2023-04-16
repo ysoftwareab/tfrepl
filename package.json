@@ -2,7 +2,7 @@
   "name": "tfrepl",
   "version": "0.0.3",
   "description": "A terraform REPL.",
-  "license": "UNLICENSE",
+  "license": "Apache 2.0",
   "scripts": {
     "postversion": "priv/npm-postversion"
   }
