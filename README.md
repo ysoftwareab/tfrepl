@@ -52,6 +52,13 @@ Check your config with `.config` and undo one command at a time with `.undo`.
 
 If your config is ephemeral, just `.exit`. Whenever you want to take snapshots of your config, just `.save`.
 
+## Known limitations
+
+* config gets evaluated when blocks seem complete
+  i.e. number of closed curly braces is greater or equal with number of open curly braces.
+  If you were to a string with an open curly brace,
+  then tfrepl wouldn't know when your blocks are complete.
+
 ## Easter egg: `tfwatch`
 
 Install 

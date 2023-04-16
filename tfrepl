@@ -197,7 +197,7 @@ function main() {
         CLOSED_BRACES=
         INPUT=
         continue
-      elif [[ "${#OPEN_BRACES}" = "${#CLOSED_BRACES}" ]]; then
+      elif [[ ${#OPEN_BRACES} -le ${#CLOSED_BRACES} ]]; then
         TFREPL_MARKER_ID="$(_tfrepl_id)"
         echo "${TFREPL_MARKER} ${TFREPL_MARKER_ID}" >> "${TFREPL_FILE}"
         echo "${INPUT}" >> "${TFREPL_FILE}"
