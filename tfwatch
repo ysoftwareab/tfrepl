@@ -41,14 +41,14 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+[[ $# -eq 1 ]] || {
+  >&2 echo "[ERR ]" "One argument required. A local variable to watch e.g. 'local.myvar'."
+  exit 1
+}
+
 TFWATCH_FILE=tfwatch.tf
 TFWATCH_VAR="$1"
 shift
-
-[[ $# -eq 0 ]] || {
-  >&2 echo "$(basename ${BASH_SOURCE[0]}): unrecognized option '$*'"
-  exit 1
-}
 
 function _tfwatch_cleanup() {
   rm -rf "${TFWATCH_FILE}"
