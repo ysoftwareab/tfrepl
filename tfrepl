@@ -1,0 +1,225 @@
+#!/usr/bin/env bash
+# set -x # TRACE
+set -euo pipefail
+
+# This is free and unencumbered software released into the public domain.
+
+# Anyone is free to copy, modify, publish, use, compile, sell, or
+# distribute this software, either in source code form or as a compiled
+# binary, for any purpose, commercial or non-commercial, and by any
+# means.
+
+# In jurisdictions that recognize copyright laws, the author or authors
+# of this software dedicate any and all copyright interest in the
+# software to the public domain. We make this dedication for the benefit
+# of the public at large and to the detriment of our heirs and
+# successors. We intend this dedication to be an overt act of
+# relinquishment in perpetuity of all present and future rights to this
+# software under copyright law.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+# OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+# ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+# OTHER DEALINGS IN THE SOFTWARE.
+
+# For more information, please refer to <http://unlicense.org/>
+
+TFREPL_VSN=0.0.0
+
+TFREPL_FILE=tfrepl.tf
+TFREPL_OVERRIDE_FILE=tfrepl_override.tf
+TFREPL_MARKER="# tfrepl"
+TFREPL_MARKER_ID=
+
+SCRIPTURL_LATEST=https://github.com/andreineculau/tfrepl/releases/latest/download/tfrepl
+# see https://stackoverflow.com/a/4774063/465684
+SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+SCRIPT="${SCRIPTPATH}/${BASH_SOURCE[0]}"
+
+export HISTFILE=.terraform/tfrepl.history
+export HISTCONTROL=erasedups:ignoredups:ignorespace
+
+if { getopt --test >/dev/null 2>&1 && false; } || [[ "$?" = "4" ]] || false; then
+  ARGS=$(getopt -o v -l version -n $(basename ${BASH_SOURCE[0]}) -- "$@")
+  eval set -- "${ARGS}"
+fi
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --version)
+      echo "${TFREPL_VSN}"
+      exit
+      ;;
+    --)
+      shift 1
+      ;;
+    *)
+      >&2 echo "$(basename ${BASH_SOURCE[0]}): unrecognized option '$*'"
+      exit 1
+      ;;
+  esac
+done
+
+function _tfrepl_cleanup() {
+  rm -rf "${TFREPL_FILE}" "${TFREPL_OVERRIDE_FILE}"
+}
+
+trap _tfrepl_cleanup EXIT
+
+function _tfrepl_id() {
+  local LENGTH=16
+
+  if command -v hexdump >/dev/null; then
+    hexdump -n ${LENGTH} -e '4/4 "%08X" 1 "\n"' /dev/random | tr "[:upper:]" "[:lower:]"
+  elif command -v xxd >/dev/null; then
+    xxd -l ${LENGTH} -p -c 1000000 /dev/urandom
+  else
+    CHARS=1234567890abcdef
+    for ((i=0; i<${LENGTH}; i++)); do
+      echo -n "${CHARS:RANDOM%${#CHARS}:1}"
+    done
+    echo
+  fi
+}
+
+function _tfrepl_help() {
+  echo ".config       Print the REPL terraform config"
+  echo ".exit         Exit the REPL"
+  echo ".help         Print this help message"
+  echo ".history      Print the history of REPL commands"
+  echo ".save         Save the REPL terraform config"
+  echo ".undo         Undo last command from the REPL terraform config"
+  echo ".upgrade      Upgrade REPL to the latest version"
+  echo
+  echo ".<whatever>   Bash evaluate whatever you want"
+  echo "              For example, '.echo 123' will print 123"
+  echo "              Or '.ls' will list contents of the current working directory, etc."
+  echo
+  echo "Your REPL commands end up as ${TFREPL_FILE} and ${TFREPL_OVERRIDE_FILE}."
+  echo "Your REPL history is being recorded to ${HISTFILE}."
+  echo "Multiple lines are recorded until curly braces are balanced."
+  echo
+}
+
+function _tfrepl_config() {
+  {
+    cat "${TFREPL_FILE}"
+    echo
+    echo "${TFREPL_MARKER}"
+  } | grep -v "^${TFREPL_MARKER}"
+}
+
+function _tfrepl_save() {
+  local TFREPL_SAVE_FILE="$(_tfrepl_id).${TFREPL_FILE}"
+  if [[ -f "${TFREPL_SAVE_FILE}" ]]; then
+    >&2 echo "[ERR ]" "Failed to save your REPL terraform config to ${TFREPL_SAVE_FILE}."
+    >&2 echo "[INFO]" "${TFREPL_SAVE_FILE} already exists. Refusing to overwrite."
+  elif _tfrepl_config > "${TFREPL_SAVE_FILE}"; then
+    >&2 echo "[INFO]" "Saved your REPL terraform config to ${TFREPL_SAVE_FILE}."
+    echo -n > "${TFREPL_FILE}"
+  else
+    >&2 echo "[ERR ]" "Failed to save your REPL terraform config to ${TFREPL_SAVE_FILE}."
+  fi
+}
+
+function _tfrepl_undo() {
+  # NOTE poor man's version of cross-platform inline replace for sed
+  {
+    rm -f "${TFREPL_FILE}"
+    { tac | sed -e "1,/^${TFREPL_MARKER}/ d" | tac; } > "${TFREPL_FILE}"
+  } < "${TFREPL_FILE}"
+}
+
+function _tfrepl_upgrade() {
+  [[ -w "${SCRIPT}" ]] || {
+    >&2 echo "[ERR ]" "${SCRIPT} is not writable. Upgrade failed."
+    return 1
+  }
+  if command -v curl >/dev/null; then
+    >&2 echo "[INFO]" "curl is available."
+    >&2 echo "[INFO]" "Download ${SCRIPTURL_LATEST} to ${SCRIPT}..."
+    curl -fqsSL -o "${SCRIPT}" "${SCRIPTURL_LATEST}"
+  elif command -v wget >/dev/null; then
+    >&2 echo "[INFO]" "wget is available."
+    >&2 echo "[INFO]" "Download ${SCRIPURL_LATEST} to ${SCRIPT}..."
+    wget -O "${SCRIPT}" "${SCRIPTURL_LATEST}"
+  else
+    >&2 echo "[ERR ]" "Neither curl, nor wget is available. Upgrade failed."
+    return 1
+  fi
+  chmod +x "${SCRIPT}"
+  >&2 echo "[INFO]" "Upgraded myself to latest version: $("${SCRIPT}" --version)."
+  "${SCRIPT}"
+  exit 0
+}
+
+function main() {
+  local OPEN_BRACES=
+  local CLOSED_BRACES=
+  local INPUT=
+  local NEW_INPUT=
+
+  while true; do
+    if [[ -z "${INPUT}" ]]; then
+      IFS= builtin read -d $'\r' -e -p "> " NEW_INPUT
+    else
+      IFS= builtin read -d $'\r' -e NEW_INPUT
+    fi
+    # >&2 echo "[DBG ]" "${NEW_INPUT}" # TRACE
+
+    builtin history -s "${NEW_INPUT}"
+    builtin history -w
+    builtin history -c
+    builtin history -r
+
+    if [[ -z "${INPUT}" ]] && echo "${NEW_INPUT}" | grep -q "^\."; then
+      INPUT="${NEW_INPUT}"
+      NEW_INPUT=
+      if echo "${INPUT}" | grep -q "^\.\(config\|help\|save\|undo\|upgrade\)$"; then
+        "_tfrepl_${INPUT:1}" || true
+      else
+        builtin eval "{ ${INPUT:1}; } || true"
+      fi
+      INPUT=
+      continue
+    else
+      INPUT="${INPUT}${NEW_INPUT}"
+      OPEN_BRACES="${OPEN_BRACES}${NEW_INPUT//[^\{]}"
+      CLOSED_BRACES="${CLOSED_BRACES}${NEW_INPUT//[^\}]}"
+      NEW_INPUT=
+
+      if [[ "${#OPEN_BRACES}" = "0" ]]; then
+        echo "${INPUT}" | terraform console || true
+        INPUT=
+        continue
+      elif [[ "${#OPEN_BRACES}" = "${#CLOSED_BRACES}" ]]; then
+        TFREPL_MARKER_ID="$(_tfrepl_id)"
+        echo "${TFREPL_MARKER} ${TFREPL_MARKER_ID}" >> "${TFREPL_FILE}"
+        echo "${INPUT}" >> "${TFREPL_FILE}"
+        INPUT=
+        terraform validate || {
+          _tfrepl_undo
+          continue
+        }
+        terraform fmt "${TFREPL_FILE}" >/dev/null
+        continue
+      else
+        continue
+      fi
+    fi
+  done
+}
+
+mkdir -p "$(dirname "${HISTFILE}")"
+touch "${HISTFILE}"
+builtin history -n
+
+touch "${TFREPL_FILE}"
+ln -sf "${TFREPL_FILE}" "${TFREPL_OVERRIDE_FILE}"
+
+echo "Welcome to tfrepl ${TFREPL_VSN}."
+echo "Type '.help' for more information."
+main

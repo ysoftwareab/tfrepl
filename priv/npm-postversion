@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+set -x
+
+TFREPL_VSN=$(node -p "require(\"./package.json\").version")
+
+sed -i "s/^TFREPL_VSN=.\+/TFREPL_VSN=${TFREPL_VSN}/" tfrepl
+sed -i "s/^TFWATCH_VSN=.\+/TFWATCH_VSN=${TFREPL_VSN}/" tfwatch
+
+git add tfrepl tfwatch
+git commit --no-edit --amend
+
+git tag -f v${TFREPL_VSN} -a -m "${TFREPL_VSN}"

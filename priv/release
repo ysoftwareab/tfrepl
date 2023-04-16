@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+set -x
+
+command -v gh
+command -v npm
+
+cd "$(git rev-parse --show-toplevel)"
+git checkout master
+git pull --tags
+npm version $@
+git push --follow-tags
+
+TFREPL_VSN=$(node -p "require(\"./package.json\").version")
+gh release create --verify-tag --generate-notes v${TFREPL_VSN} tfrepl tfwatch
