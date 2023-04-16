@@ -1,0 +1,25 @@
+ls -la
+cat demo.tf
+tfrepl
+.ls -la
+local.demo
+locals { given_name = "Andrei" }
+.config
+local.given_name
+locals { family_name = "Neculau" }
+.config
+local.family_name
+.undo
+local.family_name
+.config
+.undo
+.config
+# use ARROW UP to surf history and set family_name again
+# use HISTORY SEARCH to set given_name again
+.config
+.save
+.config
+.ls -la
+.cat *.tfrepl.tf
+.history
+.exit
