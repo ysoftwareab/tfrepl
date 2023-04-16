@@ -77,6 +77,27 @@ so that you check whether it matches your intentions/expectations or not.
 Releasing new version is as easy as running `priv/release patch`
 to release a new patch version.
 
+## Alternative/s
+
+https://github.com/paololazzari/terraform-repl is another terraform REPL.
+When trying it out, I got surprised with requests to install docker, socat.
+Even with all the dependencies met, I was greeted with a
+`Something went wrong: the docker container backend could not start` message,
+and a dirty locked-out state: all retries to start the REPL end in
+`A terraform console process is already running here`.
+Now I had to learn which docker container to kill and which lockfile to delete.
+Running without docker `terraform-repl -no-docker-container-backend` works,
+but now you need jq and hcl2json.
+Since it doesn't align well with One Thing Well :tm:,
+patching it lost in favour of starting fresh and `tfrepl` was born.
+
+Differences
+* :heavy_plus_sign: `tfrepl` has slim dependencies
+  like basic Unix tools (`bash`, `sed`, `grep`, etc) and `terraform`
+* :heavy_plus_sign: `tfrepl` supports multiline config
+* :heavy_plus_sign: `tfrepl` sandboxes history to each .terraform folder
+* :heavy_plus_sign: `tfrepl` introduces a specific syntax for commands: leading `.`
+
 ## License
 
 [UNLICENSE](./UNLICENSE)
