@@ -56,8 +56,8 @@ If your config is ephemeral, just `.exit`. Whenever you want to take snapshots o
 
 * config gets evaluated when blocks seem complete
   i.e. number of closed curly braces is greater or equal with number of open curly braces.
-  If you were to a string with an open curly brace,
-  then tfrepl wouldn't know when your blocks are complete.
+  If you were to have a string with an open curly brace,
+  then `tfrepl` wouldn't know when your blocks are complete.
 
 ## Easter egg: `tfwatch`
 
