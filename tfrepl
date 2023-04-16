@@ -100,7 +100,6 @@ function _tfrepl_help() {
   echo
   echo "Your REPL commands end up as ${TFREPL_FILE} and ${TFREPL_OVERRIDE_FILE}."
   echo "Your REPL history is being recorded to ${HISTFILE}."
-  echo "Multiple lines are recorded until curly braces are balanced."
   echo
 }
 
