@@ -99,7 +99,7 @@ function _tfrepl_help() {
   echo "              Or '.ls' will list contents of the current working directory, etc."
   echo
   echo "Your REPL commands end up as ${TFREPL_FILE} and ${TFREPL_OVERRIDE_FILE}."
-  echo "Your REPL history is being recorded to ${HISTFILE}."
+  echo "Your REPL history is being recorded to ${HISTFILE}. Clear it by typing '.history -c'."
   echo
 }
 
