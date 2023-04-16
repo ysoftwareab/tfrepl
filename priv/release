@@ -2,6 +2,8 @@
 set -euo pipefail
 set -x
 
+[[ $# -ne 0 ]] || set -- patch
+
 command -v gh
 command -v npm
 

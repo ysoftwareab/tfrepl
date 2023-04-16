@@ -74,8 +74,8 @@ so that you check whether it matches your intentions/expectations or not.
 
 ## Development
 
-Releasing new version is as easy as running `priv/release patch`
-to release a new patch version.
+Releasing new version is as easy as running `priv/release`
+to release a new patch version. For minor/major, run `priv/release minor|major`.
 
 ## Alternative/s
 
