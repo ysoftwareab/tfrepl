@@ -193,12 +193,16 @@ function main() {
 
       if [[ "${#OPEN_BRACES}" = "0" ]]; then
         echo "${INPUT}" | terraform console || true
+        OPEN_BRACES=
+        CLOSED_BRACES=
         INPUT=
         continue
       elif [[ "${#OPEN_BRACES}" = "${#CLOSED_BRACES}" ]]; then
         TFREPL_MARKER_ID="$(_tfrepl_id)"
         echo "${TFREPL_MARKER} ${TFREPL_MARKER_ID}" >> "${TFREPL_FILE}"
         echo "${INPUT}" >> "${TFREPL_FILE}"
+        OPEN_BRACES=
+        CLOSED_BRACES=
         INPUT=
         terraform validate || {
           _tfrepl_undo
