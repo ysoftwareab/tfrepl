@@ -27,7 +27,7 @@ set -euo pipefail
 
 # For more information, please refer to <http://unlicense.org/>
 
-TFREPL_VSN=0.0.1
+TFREPL_VSN=0.0.2
 
 TFREPL_FILE=tfrepl.tf
 TFREPL_OVERRIDE_FILE=tfrepl_override.tf

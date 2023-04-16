@@ -27,7 +27,7 @@ set -euo pipefail
 
 # For more information, please refer to <http://unlicense.org/>
 
-TFWATCH_VSN=0.0.1
+TFWATCH_VSN=0.0.2
 
 if { getopt --test >/dev/null 2>&1 && false; } || [[ "$?" = "4" ]] || false; then
   ARGS=$(getopt -o v -l version -n $(basename ${BASH_SOURCE[0]}) -- "$@")
