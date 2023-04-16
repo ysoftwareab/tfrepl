@@ -42,7 +42,8 @@ while [[ $# -gt 0 ]]; do
 done
 
 [[ $# -eq 1 ]] || {
-  >&2 echo "[ERR ]" "One argument required. A local variable to watch e.g. 'local.myvar'."
+  >&2 echo "[ERR ]" "One argument required: an expression to watch."
+  >&2 echo "      " "e.g. 'local.myvar' or 'concat(module.foo.value, module.bar.value)'."
   exit 1
 }
 
