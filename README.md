@@ -27,6 +27,10 @@ Multiple lines are recorded until curly braces are balanced.
 **NOTE** Need `tfrepl_override.tf` in order to override existing config.
 Need `tfrepl.tf` because `tfrepl_override.tf` can only override, but not add to the existing config.
 
+## Demo
+
+![ttyrecord](./demo/tty.gif)
+
 ## Install
 
 Assuming that `/usr/local/bin` is in your `$PATH`:

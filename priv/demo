@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
+command -v ttyrec || brew install ttyrec
+command -v ttygif || brew install ttygif
+# command -v asciicinema || brew install asciicinema
+
+cd ${SCRIPTPATH}/demo
+rm -rf ttyrecord tty.gif
+ttyrec ttyrecord
+# asciicinema rec ../demo.cast
+# asciicinema upload ../demo.cast
+ttygif ttyrecord
