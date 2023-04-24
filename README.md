@@ -33,11 +33,19 @@ Need `tfrepl.tf` because `tfrepl_override.tf` can only override, but not add to 
 
 ## Install
 
-Assuming that `/usr/local/bin` is in your `$PATH`:
+Assuming that `/usr/local/bin` is in your `$PATH`, install via:
 
 ```bash
 curl -fqsSL -o /usr/local/bin/tfrepl https://github.com/andreineculau/tfrepl/releases/latest/download/tfrepl
 chmod +x /usr/local/bin/tfrepl
+```
+
+You can also install `tfrepl` via npm/pnpm/yarn:
+
+```bash
+npm i -g andreineculau/tfrepl
+pnpm add -g andreineculau/tfrepl
+yarn global add andreineculau/tfrepl
 ```
 
 ## Basic usage
@@ -61,14 +69,22 @@ If your config is ephemeral, just `.exit`. Whenever you want to take snapshots o
 
 ## Easter egg: `tfwatch`
 
-Install 
+Assuming that `/usr/local/bin` is in your `$PATH`, install via:
 
 ```bash
 curl -fqsSL -o /usr/local/bin/tfwatch https://github.com/andreineculau/tfrepl/releases/latest/download/tfwatch
 chmod +x /usr/local/bin/tfwatch
 ```
 
-run `tfwatch local.test` and start modifying your terraform files to include `local.test` e.g. `locals {test=true}`,
+You can also install `tfwatch` via npm/pnpm/yarn:
+
+```bash
+npm i -g andreineculau/tfrepl
+pnpm add -g andreineculau/tfrepl
+yarn global add andreineculau/tfrepl
+```
+
+Run `tfwatch local.test` and start modifying your terraform files to include `local.test` e.g. `locals {test=true}`,
 you'll see the value being updated in the `tfwatch` output,
 so that you check whether it matches your intentions/expectations or not.
 

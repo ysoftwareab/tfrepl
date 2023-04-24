@@ -3,6 +3,10 @@
   "version": "0.0.7",
   "description": "A terraform REPL.",
   "license": "Apache 2.0",
+  "bin": {
+    "tfrepl": "./tfrepl",
+    "tfwatch": "./tfwatch"
+  },
   "scripts": {
     "postversion": "priv/npm-postversion"
   }
