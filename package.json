@@ -1,6 +1,6 @@
 {
   "name": "tfrepl",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A terraform REPL.",
   "license": "Apache 2.0",
   "bin": {
