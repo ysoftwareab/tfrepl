@@ -2,7 +2,7 @@
 # set -x # TRACE
 set -euo pipefail
 
-# https://github.com/andreineculau/tfrepl
+# https://github.com/ysoftwareab/tfrepl
 # Copyright 2023- Andrei Neculau
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@ TFREPL_OVERRIDE_FILE=tfrepl_override.tf
 TFREPL_MARKER="# tfrepl"
 TFREPL_MARKER_ID=
 
-SCRIPTURL_LATEST=https://github.com/andreineculau/tfrepl/releases/latest/download/tfrepl
+SCRIPTURL_LATEST=https://github.com/ysoftwareab/tfrepl/releases/latest/download/tfrepl
 # see https://stackoverflow.com/a/4774063/465684
 SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 SCRIPT="${SCRIPTPATH}/${BASH_SOURCE[0]}"

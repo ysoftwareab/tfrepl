@@ -2,7 +2,7 @@
 # set -x # TRACE
 set -euo pipefail
 
-# https://github.com/andreineculau/tfrepl
+# https://github.com/ysoftwareab/tfrepl
 # Copyright 2023- Andrei Neculau
 #
 # Licensed under the Apache License, Version 2.0 (the "License");

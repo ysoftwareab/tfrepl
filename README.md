@@ -36,16 +36,16 @@ Need `tfrepl.tf` because `tfrepl_override.tf` can only override, but not add to 
 Assuming that `/usr/local/bin` is in your `$PATH`, install via:
 
 ```bash
-curl -fqsSL -o /usr/local/bin/tfrepl https://github.com/andreineculau/tfrepl/releases/latest/download/tfrepl
+curl -fqsSL -o /usr/local/bin/tfrepl https://github.com/ysoftwareab/tfrepl/releases/latest/download/tfrepl
 chmod +x /usr/local/bin/tfrepl
 ```
 
 You can also install `tfrepl` via npm/pnpm/yarn:
 
 ```bash
-npm i -g andreineculau/tfrepl
-pnpm add -g andreineculau/tfrepl
-yarn global add andreineculau/tfrepl
+npm i -g ysoftwareab/tfrepl
+pnpm add -g ysoftwareab/tfrepl
+yarn global add ysoftwareab/tfrepl
 ```
 
 ## Basic usage
@@ -72,16 +72,16 @@ If your config is ephemeral, just `.exit`. Whenever you want to take snapshots o
 Assuming that `/usr/local/bin` is in your `$PATH`, install via:
 
 ```bash
-curl -fqsSL -o /usr/local/bin/tfwatch https://github.com/andreineculau/tfrepl/releases/latest/download/tfwatch
+curl -fqsSL -o /usr/local/bin/tfwatch https://github.com/ysoftwareab/tfrepl/releases/latest/download/tfwatch
 chmod +x /usr/local/bin/tfwatch
 ```
 
 You can also install `tfwatch` via npm/pnpm/yarn:
 
 ```bash
-npm i -g andreineculau/tfrepl
-pnpm add -g andreineculau/tfrepl
-yarn global add andreineculau/tfrepl
+npm i -g ysoftwareab/tfrepl
+pnpm add -g ysoftwareab/tfrepl
+yarn global add ysoftwareab/tfrepl
 ```
 
 Run `tfwatch local.test` and start modifying your terraform files to include `local.test` e.g. `locals {test=true}`,
